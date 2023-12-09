@@ -1,7 +1,7 @@
 
-# ODB2AI - Intelligent Car Diagnostics
+# OBD2AI - Intelligent Car Diagnostics
 
-ODB2AI is an innovative Android application that connects to your car's OBD2 system, providing detailed diagnostics and state analysis using OpenAI's ChatGPT API. This application aims to simplify car maintenance and diagnostics, making it accessible for every car owner.
+OBD2AI is an innovative Android application that connects to your car's OBD2 system, providing detailed diagnostics and state analysis using OpenAI's ChatGPT API. This application aims to simplify car maintenance and diagnostics, making it accessible for every car owner.
 
 ## Features
 
@@ -22,7 +22,7 @@ ODB2AI is an innovative Android application that connects to your car's OBD2 sys
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/JakKubi/ODB2AI.git
+   git clone https://github.com/JakKubi/OBD2AI.git
    ```
 2. Open the project in your preferred Android development environment.
 3. Build and run the application.
@@ -30,7 +30,7 @@ ODB2AI is an innovative Android application that connects to your car's OBD2 sys
 ## Usage
 
 1. Connect the OBD2 scanner to your car's OBD2 port.
-2. Open the ODB2AI app and pair it with the scanner.
+2. Open the OBD2AI app and pair it with the scanner.
 3. Access real-time data and AI-powered insights from your car.
 
 ## Contributing
@@ -45,11 +45,11 @@ Contributions are what make the open-source community such an amazing place to l
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/JaKuBisz/ODB2AI/blob/main/LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/JaKuBisz/OBD2AI/blob/main/LICENSE) file for details.
 
 ## Acknowledgements
 
 - [OpenAI ChatGPT API](https://openai.com/api/)
-- [odb2aux](https://github.com/JuanJoseMoralesC/odb2aux)
+- [obd2aux](https://github.com/JuanJoseMoralesC/obd2aux)
 
 *This readme was created with the help of ChatGPT.* 

@@ -1,4 +1,4 @@
-package com.jakubisz.odb2ai
+package com.jakubisz.obd2ai
 
 import org.junit.Test
 

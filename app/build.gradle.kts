@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.jakubisz.odb2ai"
+    namespace = "com.jakubisz.obd2ai"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.jakubisz.odb2ai"
+        applicationId = "com.jakubisz.obd2ai"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.jakubisz.odb2ai
+package com.jakubisz.obd2ai
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,13 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.jakubisz.odb2ai.ui.theme.ODB2AITheme
+import com.jakubisz.obd2ai.ui.theme.OBD2AITheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ODB2AITheme {
+            OBD2AITheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Greeting("Android")
@@ -37,7 +37,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    ODB2AITheme {
+    OBD2AITheme {
         Greeting("Android")
     }
 }
