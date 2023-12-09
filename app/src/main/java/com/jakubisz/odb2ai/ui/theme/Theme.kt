@@ -1,4 +1,4 @@
-package com.jakubisz.odb2ai.ui.theme
+package com.jakubisz.obd2ai.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun ODB2AITheme(
+fun OBD2AITheme(
         darkTheme: Boolean = isSystemInDarkTheme(),
         // Dynamic color is available on Android 12+
         dynamicColor: Boolean = true,

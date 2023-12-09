@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ODB2AI"
+rootProject.name = "OBD2AI"
 include(":app")

@@ -1,4 +1,4 @@
-package com.jakubisz.odb2ai.ui.theme
+package com.jakubisz.obd2ai.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
