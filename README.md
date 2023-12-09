@@ -45,12 +45,11 @@ Contributions are what make the open-source community such an amazing place to l
 
 ## License
 
-Distributed under the Apache License 2.0. See `LICENSE` for more information.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](https://github.com/JaKuBisz/ODB2AI/blob/main/LICENSE) file for details.
 
 ## Acknowledgements
 
 - [OpenAI ChatGPT API](https://openai.com/api/)
-- [Your Favorite Libraries](#)
-- [Other Resources](#)
+- [odb2aux](https://github.com/JuanJoseMoralesC/odb2aux)
 
-*This readme ws created with the of ChatGPT.* 
+*This readme was created with the help of ChatGPT.* 
