@@ -48,7 +48,11 @@ android {
 
 dependencies {
     //Custom
+    // ODB2 API
     implementation("com.github.eltonvs:kotlin-obd-api:1.3.0")
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     //Android default
     implementation("androidx.core:core-ktx:1.12.0")
