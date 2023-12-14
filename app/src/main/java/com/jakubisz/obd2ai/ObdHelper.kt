@@ -1,13 +1,23 @@
 package com.jakubisz.obd2ai
 
-// ... (Import statements)
+import com.github.eltonvs.obd.connection.ObdDeviceConnection
 
-class ObdManager(private val bluetoothManager: BluetoothHelper) {
-    private var obdSocket: BluetoothSocket? = null
+class ObdHelper(private val bluetoothHelper: BluetoothHelper) {
+    private var obdSocket: ObdDeviceConnection? = null
 
-    suspend fun connectToObdDevice(deviceAddress: String): ObdDeviceConnection {
-        // Connect to OBD device logic
+    suspend fun setupObd(deviceAddress: String) {
+        val (inputStream, outputStream) = bluetoothHelper.connectToDevice(deviceAddress)
+        obdSocket = ObdDeviceConnection(inputStream, outputStream)
     }
 
-    // Other OBD operations
+    fun getObdDeviceConnection(): ObdDeviceConnection? {
+        return obdSocket
+    }
+
+    fun disconnectFromObdDevice() {
+        bluetoothHelper.disconnectFromDevice()
+    }
+
+
+
 }

@@ -1,12 +1,8 @@
 package com.jakubisz.obd2ai
 
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.Manifest.permission
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
-import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,17 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.jakubisz.obd2ai.ui.theme.OBD2AITheme
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Service
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.IBinder
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.AlertDialog
@@ -38,70 +26,55 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
-import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.eltonvs.obd.command.ObdResponse
-import com.github.eltonvs.obd.command.control.DTCNumberCommand
 import com.github.eltonvs.obd.command.control.PendingTroubleCodesCommand
 import com.github.eltonvs.obd.command.control.PermanentTroubleCodesCommand
 import com.github.eltonvs.obd.command.control.TroubleCodesCommand
-import com.github.eltonvs.obd.command.control.VINCommand
-import com.github.eltonvs.obd.command.engine.RPMCommand
-import com.github.eltonvs.obd.command.engine.SpeedCommand
-import com.github.eltonvs.obd.command.temperature.AirIntakeTemperatureCommand
 import com.github.eltonvs.obd.connection.ObdDeviceConnection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
 var obdDeviceConnection: ObdDeviceConnection? = null
 var isConnected = false
 
 @SuppressLint("MissingPermission")
 class MainActivity : ComponentActivity() {
-    var bluetoothAdapter: BluetoothAdapter? = null
-    var obdSocket: BluetoothSocket? = null
-    // UUID for SPP (Serial Port Profile)
-    private val sppUuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
-
-    companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 101
-    }
-
+    private lateinit var bluetoothHelper: BluetoothHelper
+    private lateinit var obdHelper: ObdHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initHelpers()
+        val bluetoothTestViewModel = BluetoothTestViewModel(bluetoothHelper)
         setContent {
             OBD2AITheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
+                    //Greeting("Android")
+                    TestFancy(viewModel = bluetoothTestViewModel)
                 }
             }
         }
-        checkBluetoothPermissions()
+        //bluetoothHelper.checkBluetoothPermissions()
     }
 
-    private fun checkBluetoothPermissions() {
-        if (ContextCompat.checkSelfPermission(this, permission.BLUETOOTH)
-            != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, permission.BLUETOOTH_ADMIN)
-            != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-
-            // Permissions are not granted. Request permissions.
-            ActivityCompat.requestPermissions(this, arrayOf(
-                permission.BLUETOOTH,
-                permission.BLUETOOTH_ADMIN,
-                permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE_PERMISSIONS)
-        } else {
-            // Permissions already granted. Proceed with Bluetooth operations.
-            setupBluetooth()
-
-        }
+    private fun initHelpers() {
+        bluetoothHelper = BluetoothHelper(this)
+        obdHelper = ObdHelper(bluetoothHelper)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -109,14 +82,12 @@ class MainActivity : ComponentActivity() {
                                    grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permissions granted. You can proceed with your Bluetooth operations.
-                setupBluetooth()
-            } else {
-                // Permissions denied. Handle the feature's unavailability.
-                showPermissionsDeniedDialog()
-            }
+        if (bluetoothHelper.resolvePermissionsResult(requestCode, grantResults)) {
+            // Permissions granted. You can proceed with your Bluetooth operations.
+            //setupObd()
+        } else {
+            // Permissions denied. Handle the feature's unavailability.
+            //showPermissionsDeniedDialog()
         }
     }
 
@@ -131,50 +102,12 @@ class MainActivity : ComponentActivity() {
             .show()
     }
 
-    suspend fun connectToObdDevice(deviceAddress: String) : ObdDeviceConnection {
-        val device: BluetoothDevice = bluetoothAdapter?.getRemoteDevice(deviceAddress)
-            ?: throw IOException("Device not found")
-
-
-        obdSocket = device.createRfcommSocketToServiceRecord(sppUuid).apply {
-            // Cancel discovery as it may slow down the connection
-            bluetoothAdapter?.cancelDiscovery()
-
-            // Connect to the remote device
-            connect()
-        }
-        if (obdSocket == null) {
-            throw IOException("OBD Socket is null")
-        }
-
-        // After connection, you can use the input and output streams to communicate
-        val inputStream = obdSocket?.inputStream
-        val outputStream = obdSocket?.outputStream
-
-        if (inputStream == null || outputStream == null) {
-            throw IOException("Socket streams are null")
-        }
-
-        // Send OBD commands and read responses
-        // Create ObdDeviceConnection instance
-        return ObdDeviceConnection(inputStream, outputStream)
-    }
-
-    private fun setupBluetooth() {
-        val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothAdapter = bluetoothManager.adapter
-        if (bluetoothAdapter?.isEnabled == false) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(this, enableBtIntent, REQUEST_CODE_PERMISSIONS, null)
-        }
-        val devices = bluetoothAdapter?.bondedDevices
-        devices?.forEach {
-            println(it.name)
-        }
-
+    private fun setupObd() {
+        bluetoothHelper.setupBluetooth()
         lifecycleScope.launch(Dispatchers.IO) {
-            val result = connectToObdDevice("00:1D:A5:68:98:8B")
-            withContext(Dispatchers.Main) {
+            obdHelper.setupObd("00:1D:A5:68:98:8B")
+            val result = obdHelper.getObdDeviceConnection()
+                withContext(Dispatchers.Main) {
                 // Update UI with the result
                 GetResult(result)
             }
@@ -182,9 +115,70 @@ class MainActivity : ComponentActivity() {
 
         //connectToObdDevice("00:1D:A5:68:98:8B")
     }
-    private fun GetResult(result : ObdDeviceConnection) {
-        isConnected = true
+    private fun GetResult(result : ObdDeviceConnection?) {
+        isConnected = result != null
         obdDeviceConnection = result
+    }
+}
+
+@SuppressLint("MissingPermission")
+@Composable
+fun TestFancy(viewModel: BluetoothTestViewModel) {
+    val onSuccess = { connection: Pair<InputStream, OutputStream> ->
+        // Handle successful connection here
+        // For example, you can update the UI to show a successful connection message
+        // or start using the connection streams
+    }
+
+    // Define the onFailure callback
+    val onFailure = { exception: IOException ->
+        // Handle failure here
+        // For example, you can show an error message to the user
+    }
+    val activity = LocalContext.current as Activity
+    var displayText by remember { mutableStateOf("Test") }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(
+            text = displayText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 18.sp
+        )
+
+        Button(
+            onClick = { viewModel.requestBluetoothPermissions(activity) },
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        ) {
+            Text("Ask permissions for BT")
+        }
+        Button(
+            onClick = { viewModel.enableBluetooth(activity) },
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        ) {
+            Text("Enable BT")
+        }
+        Button(
+            onClick = { displayText = viewModel.getAvailableDevices().joinToString("\n") { "Name: ${it.name}, Address: ${it.address}" } },
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        ) {
+            Text("List devices")
+        }
+        Button(
+            onClick = { viewModel.connectToDevice("00:1D:A5:68:98:8B", onSuccess, onFailure) },
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        ) {
+            Text("Connect to OBD2")
+        }
+        /*
+        Button(onClick = { /* Start communication logic */ }) {
+            Text("Start the communication with OBD2")
+        }
+        */
     }
 }
 

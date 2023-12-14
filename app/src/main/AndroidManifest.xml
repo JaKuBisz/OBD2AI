@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- Internet -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Required if targeting API 23+ -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -21,12 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OBD2AI"
         tools:targetApi="31">
-        <service
-            android:name="com.jakubisz.obd2ai.Obd2Service"
-            android:enabled="true"
-            android:exported="true" />
-        <service android:name=".BluetoothService" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true"

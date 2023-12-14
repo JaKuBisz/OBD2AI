@@ -1,7 +1,7 @@
 package com.jakubisz.obd2ai
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
@@ -30,11 +30,15 @@ import java.util.*
 //void DisconnectFromDev
 //
 
-class BluetoothManager(private val context: Context) {
-    private var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+class BluetoothHelper(private val context: Context) {
+    private val bluetoothAdapter: BluetoothAdapter?
     private var bluetoothSocket: BluetoothSocket? = null
     private val sppUuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB") // Standard SPP UUID
 
+    init {
+        val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        bluetoothAdapter = bluetoothManager.adapter
+    }
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 101
 
@@ -62,6 +66,18 @@ class BluetoothManager(private val context: Context) {
         ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
     }
 
+    fun setupBluetooth() {
+        if(checkBluetoothPermissions()) {
+            enableBluetooth()
+        } else {
+            //TODO:Pottencional issue when user denies permissions
+            requestPermissions(context as Activity)
+            enableBluetooth()
+        }
+        //val devices = getAvailableDevices()
+        //connectToDevice("00:1D:A5:68:98:8B")
+    }
+
     @Throws(SecurityException::class)
     fun enableBluetooth() {
         throwIfPermissionsNotGranted()
@@ -72,15 +88,17 @@ class BluetoothManager(private val context: Context) {
         }
     }
 
-    @Throws(SecurityException::class)
-    fun getAvailableDevices(): Set<BluetoothDevice>? {
+    @Throws(SecurityException::class, IOException::class)
+    fun getAvailableDevices(): Set<BluetoothDevice> {
         throwIfPermissionsNotGranted()
 
-        return bluetoothAdapter?.bondedDevices
+        val bluetoothAdapter = bluetoothAdapter ?: throw IOException("Bluetooth adapter is null")
+
+        return bluetoothAdapter.bondedDevices
     }
 
     @Throws(IOException::class, SecurityException::class)
-    fun connectToDevice(deviceAddress: String): Pair<InputStream?, OutputStream?> {
+    suspend fun connectToDevice(deviceAddress: String): Pair<InputStream, OutputStream> = withContext(Dispatchers.IO) {
         // Check for permissions before proceeding
         throwIfPermissionsNotGranted()
 
@@ -90,16 +108,21 @@ class BluetoothManager(private val context: Context) {
         bluetoothSocket = device.createRfcommSocketToServiceRecord(sppUuid).apply {
             try {
                 // Cancel discovery as it may slow down the connection
-                bluetoothAdapter?.cancelDiscovery()
+                bluetoothAdapter.cancelDiscovery()
 
                 // Connect to the remote device
                 connect()
             } catch (e: SecurityException) {
                 throw IOException("Failed to connect to device due to security restrictions", e)
+            } catch (e: IOException) {
+                throw IOException("Failed to connect to device", e)
             }
         }
 
-        return Pair(bluetoothSocket?.inputStream, bluetoothSocket?.outputStream)
+        // Verify that the socket streams are not null
+        val bluetoothSocket = bluetoothSocket ?: throw IOException("Bluetooth socket is null")
+
+        Pair(bluetoothSocket.inputStream, bluetoothSocket.outputStream)
     }
 
     fun disconnectFromDevice() {
@@ -107,31 +130,28 @@ class BluetoothManager(private val context: Context) {
         bluetoothSocket = null
     }
 
-    private fun setupBluetooth() {
-        val bluetoothManager = getSystemService(context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothAdapter = bluetoothManager.adapter
-        if (bluetoothAdapter?.isEnabled == false) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            ActivityCompat.startActivityForResult(
-                this,
-                enableBtIntent,
-                MainActivity.REQUEST_CODE_PERMISSIONS,
-                null
-            )
+    // Method to handle permission results
+    //Returns true if the result was granted, false otherwise
+    fun resolvePermissionsResult(requestCode: Int, grantResults: IntArray): Boolean {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            return (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
         }
-        val devices = bluetoothAdapter?.bondedDevices
-        devices?.forEach {
-            println(it.name)
-        }
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = connectToObdDevice("00:1D:A5:68:98:8B")
-            withContext(Dispatchers.Main) {
-                // Update UI with the result
-                GetResult(result)
-            }
-        }
-
-        //connectToObdDevice("00:1D:A5:68:98:8B")
+        return false
     }
+
+    /*
+    suspend fun runAutomatedBluetoothSetup(): Pair<InputStream, OutputStream> = withContext(Dispatchers.IO) {
+        if(checkBluetoothPermissions()) {
+            enableBluetooth()
+        } else {
+            //TODO:Pottencional issue when user denies permissions
+            requestPermissions(context as Activity)
+
+        }
+
+        val devices = getAvailableDevices()
+
+        connectToDevice("00:1D:A5:68:98:8B")
+        //connectToObdDevice("00:1D:A5:68:98:8B")
+    }*/
 }
