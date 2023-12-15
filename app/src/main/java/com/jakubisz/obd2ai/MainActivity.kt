@@ -2,7 +2,6 @@ package com.jakubisz.obd2ai
 
 import android.os.Bundle
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.jakubisz.obd2ai.ui.theme.OBD2AITheme
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.bluetooth.BluetoothSocket
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.AlertDialog
@@ -28,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.eltonvs.obd.command.ObdResponse
 import com.github.eltonvs.obd.command.control.PendingTroubleCodesCommand
 import com.github.eltonvs.obd.command.control.PermanentTroubleCodesCommand
@@ -45,7 +42,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -59,7 +55,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initHelpers()
-        val bluetoothTestViewModel = BluetoothTestViewModel(bluetoothHelper)
+        val bluetoothTestViewModel = TestViewModel(bluetoothHelper, obdHelper, OpenAIService())
         setContent {
             OBD2AITheme {
                 // A surface container using the 'background' color from the theme
@@ -123,7 +119,10 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("MissingPermission")
 @Composable
-fun TestFancy(viewModel: BluetoothTestViewModel) {
+fun TestFancy(viewModel: TestViewModel) {
+    var triggerApiCall by remember { mutableStateOf(false) }
+    var triggerDiagnosticCall by remember { mutableStateOf(false) }
+
     val onSuccess = { connection: Pair<InputStream, OutputStream> ->
         // Handle successful connection here
         // For example, you can update the UI to show a successful connection message
@@ -174,11 +173,31 @@ fun TestFancy(viewModel: BluetoothTestViewModel) {
         ) {
             Text("Connect to OBD2")
         }
+        Button(
+            onClick = { triggerApiCall = !triggerApiCall },
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        ) {
+            Text("Test API")
+        }
+        Button(
+            onClick = { triggerDiagnosticCall = !triggerDiagnosticCall },
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        ) {
+            Text("Start diagnostic (dummy)")
+        }
         /*
         Button(onClick = { /* Start communication logic */ }) {
             Text("Start the communication with OBD2")
         }
         */
+
+        LaunchedEffect(triggerApiCall) {
+            displayText = viewModel.testApi()
+        }
+        LaunchedEffect(triggerDiagnosticCall) {
+            displayText = viewModel.getDtpErrorExplanationExample()
+        }
+
     }
 }
 
