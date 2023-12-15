@@ -60,6 +60,9 @@ dependencies {
     //Custom
     // ODB2 API
     implementation("com.github.eltonvs:kotlin-obd-api:1.3.0")
+    // OpenAI API
+    implementation("com.aallam.openai:openai-client:3.6.1")
+    implementation("io.ktor:ktor-client-okhttp:2.3.7")
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
