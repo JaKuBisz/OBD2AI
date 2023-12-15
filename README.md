@@ -15,7 +15,7 @@ OBD2AI is an innovative Android application that connects to your car's OBD2 sys
 
 ### Prerequisites
 
-- An Android device.
+- An Android device with Android 6.0 or newer.
 - An OBD2 ELM 327 Bluetooth scanner.
 
 ### Installation
@@ -50,6 +50,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](https:
 ## Acknowledgements
 
 - [OpenAI ChatGPT API](https://openai.com/api/)
-- [obd2aux](https://github.com/JuanJoseMoralesC/obd2aux)
+- [OBD2 Communication - kotlin-obd-api by eltonvs](https://github.com/eltonvs/kotlin-obd-api)
+- [OpenAI API - openai-kotlin by Aallam](https://github.com/Aallam/openai-kotlin)
 
 *This readme was created with the help of ChatGPT.* 
