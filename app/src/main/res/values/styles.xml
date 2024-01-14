@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="buttonStyle">@style/ButtonDarkStyle</item>
+        <item name="android:textViewStyle">@style/TextDarkStyle</item>
+    </style>
+
+    <!-- Style for buttons -->
+    <style name="ButtonDarkStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button</item>
+        <!-- other button styles like text color, padding -->
+    </style>
+
+    <!-- Style for FrameLayout -->
+    <style name="BackgroundDarkStyle">
+        <item name="android:background">@color/darkBlue</item>
+        <!-- other FrameLayout styles -->
+    </style>
+
+    <!-- Style for TextViews -->
+    <style name="TextDarkStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <!-- other TextView styles -->
+    </style>
+
+</resources>

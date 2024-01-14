@@ -2,23 +2,19 @@ package com.jakubisz.obd2ai
 
 import android.app.Activity
 import android.bluetooth.BluetoothDevice
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aallam.openai.api.chat.ChatCompletion
-import com.aallam.openai.api.chat.ChatCompletionRequest
-import com.aallam.openai.api.chat.ChatMessage
-import com.aallam.openai.api.chat.ChatRole
-import com.aallam.openai.api.http.Timeout
-import com.aallam.openai.api.model.ModelId
-import com.aallam.openai.client.OpenAI
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import kotlin.time.Duration.Companion.seconds
 
-class TestViewModel(private val bluetoothHelper: BluetoothHelper, private val obdHelper: ObdHelper, private val openAI: OpenAIService) : ViewModel() {
+class ConnectorViewModel(private val bluetoothHelper: BluetoothHelper, private val obdHelper: ObdHelper, private val openAI: OpenAIService) : ViewModel() {
     // Function to request Bluetooth permissions
+
+    val isBluetoothPermissionGranted: LiveData<Boolean> = bluetoothHelper.isBluetoothPermissionGranted
+
     fun requestBluetoothPermissions(activity: Activity) {
         bluetoothHelper.requestPermissions(activity)
     }
@@ -37,7 +33,18 @@ class TestViewModel(private val bluetoothHelper: BluetoothHelper, private val ob
 
     // Function to get available devices
     fun getAvailableDevices(): List<BluetoothDeviceDTO> {
-        return bluetoothHelper.getAvailableDevices()
+        val dummyDevices = mutableListOf<BluetoothDeviceDTO>()
+
+        for (i in 1..30) {
+            dummyDevices.add(
+                BluetoothDeviceDTO(
+                    name = "Dummy Device $i",
+                    address = "00:11:22:33:44:${i.toString().padStart(2, '0')}"
+                )
+            )
+        }
+        return dummyDevices
+        //        return bluetoothHelper.getAvailableDevices()
     }
 
     // Function to connect to a device

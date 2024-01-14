@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/welcome_info">
+
+    <fragment
+        android:id="@+id/welcome_info"
+        android:name="com.jakubisz.obd2ai.InitialFragment"
+        android:label="fragment_welcome_info"
+        tools:layout="@layout/fragment_welcome_info">
+        <action
+            android:id="@+id/action_welcome_info_to_permissions"
+            app:destination="@id/permissions" />
+    </fragment>
+    <fragment
+        android:id="@+id/permissions"
+        android:name="com.jakubisz.obd2ai.PermissionsFragment"
+        android:label="fragment_permissions"
+        tools:layout="@layout/fragment_permissions" >
+        <action
+            android:id="@+id/action_permissions_to_connectFragment"
+            app:destination="@id/connectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectFragment"
+        android:name="com.jakubisz.obd2ai.ConnectFragment"
+        android:label="fragment_connect"
+        tools:layout="@layout/fragment_connect" >
+        <action
+            android:id="@+id/action_connectFragment_to_errorOverviewFragment"
+            app:destination="@id/errorOverviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/errorOverviewFragment"
+        android:name="com.jakubisz.obd2ai.ErrorOverviewFragment"
+        android:label="fragment_error_overview"
+        tools:layout="@layout/fragment_error_overview" >
+        <action
+            android:id="@+id/action_errorOverviewFragment_to_errorDetailFragment"
+            app:destination="@id/errorDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/errorDetailFragment"
+        android:name="com.jakubisz.obd2ai.ErrorDetailFragment"
+        android:label="fragment_error_detail"
+        tools:layout="@layout/fragment_error_detail" >
+        <action
+            android:id="@+id/action_errorDetailFragment_to_errorOverviewFragment"
+            app:destination="@id/errorOverviewFragment" />
+    </fragment>
+</navigation>
