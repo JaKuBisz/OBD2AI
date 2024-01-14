@@ -1,5 +1,6 @@
 package com.jakubisz.obd2ai
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
@@ -12,7 +13,10 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,6 +38,9 @@ class BluetoothHelper(private val context: Context) {
     private val bluetoothAdapter: BluetoothAdapter?
     private var bluetoothSocket: BluetoothSocket? = null
     private val sppUuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB") // Standard SPP UUID
+
+    private val _isBluetoothPermissionGranted = MutableLiveData<Boolean>()
+    val isBluetoothPermissionGranted: LiveData<Boolean> = _isBluetoothPermissionGranted
 
     init {
         val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -89,12 +96,13 @@ class BluetoothHelper(private val context: Context) {
     }
 
     @Throws(SecurityException::class, IOException::class)
-    fun getAvailableDevices(): Set<BluetoothDevice> {
+    fun getAvailableDevices(): List<BluetoothDeviceDTO> {
         throwIfPermissionsNotGranted()
 
         val bluetoothAdapter = bluetoothAdapter ?: throw IOException("Bluetooth adapter is null")
 
-        return bluetoothAdapter.bondedDevices
+        val deviceDTOs = bluetoothAdapter.bondedDevices.map { convertToDeviceDTO(it) }
+        return deviceDTOs
     }
 
     @Throws(IOException::class, SecurityException::class)
@@ -133,11 +141,34 @@ class BluetoothHelper(private val context: Context) {
     // Method to handle permission results
     //Returns true if the result was granted, false otherwise
     fun resolvePermissionsResult(requestCode: Int, grantResults: IntArray): Boolean {
+        var allPermissionsGranted = true
+
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            return (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            if (grantResults.isNotEmpty()) {
+                for (i in grantResults.indices) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        allPermissionsGranted = false
+                        break
+                    }
+                }
+            } else {
+                allPermissionsGranted = false
+            }
         }
-        return false
+
+        _isBluetoothPermissionGranted.value = allPermissionsGranted
+        return allPermissionsGranted
     }
+
+    @SuppressLint("MissingPermission")
+    fun convertToDeviceDTO(bluetoothDevice: BluetoothDevice): BluetoothDeviceDTO {
+        return BluetoothDeviceDTO(
+            name = bluetoothDevice.name,
+            address = bluetoothDevice.address
+            // Map other fields if needed
+        )
+    }
+
 
     /*
     suspend fun runAutomatedBluetoothSetup(): Pair<InputStream, OutputStream> = withContext(Dispatchers.IO) {
