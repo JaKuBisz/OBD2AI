@@ -115,5 +115,9 @@ class ErrorOverviewFragment : Fragment() {
     private fun showLoading(show: Boolean) {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
+    fun showErrorDialog(text: String) {
+        val errorDialog = ErrorDialogFragment.newInstance(text)
+        errorDialog.show(parentFragmentManager, "errorDialog")
+    }
 
 }
