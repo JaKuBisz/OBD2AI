@@ -9,6 +9,11 @@ OBD2AI is an innovative Android application that connects to your car's OBD2 sys
 - **AI-Powered Analysis:** Uses OpenAI's ChatGPT API for advanced error analysis and state-of-the-car reporting.
 - **User-Friendly Interface:** Easy to navigate interface for a hassle-free user experience.
 
+## Releases
+
+- This project uses [Semantic versioning](https://semver.org/)
+- See [current releases](https://github.com/JaKuBisz/OBD2AI/releases)
+
 ## Getting Started
 
 ### Prerequisites
