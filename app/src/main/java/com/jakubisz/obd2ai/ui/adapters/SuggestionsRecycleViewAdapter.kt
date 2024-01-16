@@ -1,9 +1,10 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.jakubisz.obd2ai.R
 
 class SuggestionsRecycleViewAdapter(private val actions: List<String>) :
 RecyclerView.Adapter<SuggestionsRecycleViewAdapter.ActionViewHolder>() {

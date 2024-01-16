@@ -1,4 +1,4 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.helpers
 
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.api.chat.ChatCompletionRequest
@@ -7,6 +7,7 @@ import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.http.Timeout
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
+import com.jakubisz.obd2ai.BuildConfig
 import com.jakubisz.obd2ai.model.DtpCodeDTO
 import com.jakubisz.obd2ai.model.ErrorSeverity
 import org.json.JSONObject
@@ -20,6 +21,11 @@ class OpenAIService {
             token = BuildConfig.OPENAI_API_KEY,
             timeout = Timeout(socket = 60.seconds)
         )
+    }
+
+    suspend fun getDtpCodeAssessment(dtpCode: String): DtpCodeDTO {
+        val response = getResponse(dtpCode)
+        return parseErrorInfo(response)
     }
 
     suspend fun getResponse(query: String): String {
@@ -74,11 +80,6 @@ class OpenAIService {
         return result
     }
 
-    suspend fun getDtpCodeAssessment(dtpCode: String): DtpCodeDTO {
-        val response = getResponse(dtpCode)
-        return parseErrorInfo(response)
-    }
-
     fun parseErrorInfo(jsonString: String): DtpCodeDTO {
         try {
             val jsonObject = JSONObject(jsonString)
@@ -100,8 +101,4 @@ class OpenAIService {
         }
 
     }
-   /* suspend fun askOpenAI(question: String): String {
-        // Implement network call to OpenAI API here
-        // Return the response
-    }*/
 }

@@ -1,4 +1,4 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.ui.viewmodels
 
 import android.app.Activity
 import androidx.lifecycle.LiveData

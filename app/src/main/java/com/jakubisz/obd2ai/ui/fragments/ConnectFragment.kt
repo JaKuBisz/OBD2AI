@@ -1,4 +1,4 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.jakubisz.obd2ai.ui.adapters.BluetoothRecyclerViewAdapter
+import com.jakubisz.obd2ai.ui.viewmodels.ConnectorViewModel
+import com.jakubisz.obd2ai.ui.activities.MainActivity
+import com.jakubisz.obd2ai.R
 
 class ConnectFragment : Fragment() {
     private lateinit var bluetoothAdapter: BluetoothRecyclerViewAdapter

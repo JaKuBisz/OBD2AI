@@ -1,10 +1,11 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.jakubisz.obd2ai.R
 import com.jakubisz.obd2ai.model.BluetoothDeviceDTO
 
 class BluetoothRecyclerViewAdapter (

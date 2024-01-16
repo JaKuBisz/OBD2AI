@@ -1,4 +1,4 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.ui.viewmodels
 
 import android.app.Activity
 import android.util.Log
@@ -6,6 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jakubisz.obd2ai.helpers.BluetoothHelper
+import com.jakubisz.obd2ai.helpers.ObdHelper
+import com.jakubisz.obd2ai.helpers.OpenAIService
 import com.jakubisz.obd2ai.model.BluetoothDeviceDTO
 import com.jakubisz.obd2ai.model.DtpCodeDTO
 import com.jakubisz.obd2ai.model.ErrorSeverity
