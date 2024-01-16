@@ -40,6 +40,10 @@
         <action
             android:id="@+id/action_errorOverviewFragment_to_errorDetailFragment"
             app:destination="@id/errorDetailFragment" />
+        <argument
+            android:name="isDemo"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/errorDetailFragment"
@@ -49,5 +53,8 @@
         <action
             android:id="@+id/action_errorDetailFragment_to_errorOverviewFragment"
             app:destination="@id/errorOverviewFragment" />
+        <argument
+            android:name="errorCode"
+            app:argType="string" />
     </fragment>
 </navigation>

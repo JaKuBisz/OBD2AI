@@ -5,55 +5,75 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.jakubisz.obd2ai.model.DtpCodeDTO
+import com.jakubisz.obd2ai.model.ErrorSeverity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ErrorDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ErrorDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val connectorViewModel: ConnectorViewModel by activityViewModels {
+        (activity as MainActivity).defaultViewModelProviderFactory
     }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: SuggestionsRecycleViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_error_detail, container, false)
+        recyclerView = view.findViewById(R.id.suggestedActionRecyclerView)
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_error_detail, container, false)
+        val errorCode = ErrorDetailFragmentArgs.fromBundle(requireArguments()).errorCode
+        connectorViewModel.dtpResults.value?.find { it.errorCode == errorCode }?.let {
+            renderErrorDetail(it, view)
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ErrorDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ErrorDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    fun renderErrorDetail(dtpCodeDTO: DtpCodeDTO, view: View) {
+        view.findViewById<TextView>(R.id.textViewErrorTitle).text = dtpCodeDTO.title
+        view.findViewById<TextView>(R.id.textViewErrorCode).text = dtpCodeDTO.errorCode
+        view.findViewById<TextView>(R.id.textViewErrorSeverity).text = "Severity: ${dtpCodeDTO.severity}"
+        view.findViewById<TextView>(R.id.textViewErrorDetail).text = dtpCodeDTO.detail
+        view.findViewById<TextView>(R.id.textViewErrorImplications).text = dtpCodeDTO.implications
+        val color = ErrorSeverity.getColor(dtpCodeDTO.severity)
+        view.findViewById<ImageView>(R.id.imageView_icon).setColorFilter(color)
+
+        setupSuggestedActionsRecyclerView(view, dtpCodeDTO.suggestedActions)
+
     }
+
+    private fun setupSuggestedActionsRecyclerView(view: View, suggestedActions: List<String>) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.suggestedActionRecyclerView)
+        adapter = SuggestionsRecycleViewAdapter(suggestedActions)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
+    }
+
+    fun setRecyclerViewHeightBasedOnChildren(recyclerView: RecyclerView) {
+        val adapter = recyclerView.adapter ?: return
+
+        var height = 0
+        val childCount = adapter.itemCount
+        for (i in 0 until childCount) {
+            val child = recyclerView.getChildAt(i) ?: continue
+            recyclerView.measure(
+                View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            )
+            height += child.measuredHeight
+        }
+
+        val layoutParams = recyclerView.layoutParams
+        layoutParams.height = height
+        recyclerView.layoutParams = layoutParams
+        recyclerView.requestLayout()
+    }
+
 }
