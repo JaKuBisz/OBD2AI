@@ -20,6 +20,7 @@ import com.jakubisz.obd2ai.ui.activities.MainActivity
 import com.jakubisz.obd2ai.R
 import com.jakubisz.obd2ai.model.DtpCodeDTO
 import com.jakubisz.obd2ai.model.ErrorSeverity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ErrorOverviewFragment : Fragment() {
@@ -64,16 +65,19 @@ class ErrorOverviewFragment : Fragment() {
     private fun loadErrorCodes() {
         showLoading(true)
 
-        if (isDemo) {
-            //connectorViewModel.dtp.addAll(listOf("P0300", "P0420", "P0171", "P0128"))
-            //connectorViewModel.assesDtpCodes()
-            connectorViewModel.assesDtpCodesTest()
-            return
-        }
+
 
         lifecycleScope.launch {
+            if (isDemo) {
+                delay(3000)
+                //connectorViewModel.dtp.addAll(listOf("P0300", "P0420", "P0171", "P0128"))
+                //connectorViewModel.assesDtpCodes()
+                connectorViewModel.assesDtpCodesTest()
+            }
+            else{
             connectorViewModel.gatherDtpCodes()
             connectorViewModel.assesDtpCodes()
+            }
         }
     }
 
