@@ -29,6 +29,7 @@ class OpenAIService {
     }
 
     suspend fun getResponse(query: String): String {
+        //TODO: Issue #2 - implement assistant https://github.com/JaKuBisz/OBD2AI/issues/2 - https://github.com/aallam/openai-kotlin/blob/main/guides/Assistants.md
         val chatCompletionRequest = ChatCompletionRequest(
             model = ModelId("gpt-3.5-turbo"),
             messages = listOf(
@@ -64,9 +65,6 @@ class OpenAIService {
                             "}\"\n" +
                             "Additional instructions:\n" +
                             "\"You are an expert mechanic. Your goal is to provide an assessment of the following OBD2 error codes. Explain what they mean and where the problem is. \""
-                    //content = "You are a expert mechanic. Your goal is to provide assessment of the following OBD2 error codes" +
-                        //    "Explain what they mean and where is problem. For each code list the code short name what it means and what is the problem. " +
-                         //   "Explain in -list what could cause this, how serious is it if you can continue driving etc. and possible solutions. \n"
                 ),
                 ChatMessage(
                     role = ChatRole.User,
