@@ -12,56 +12,54 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="Found Errors"
+        android:text="Errors Overview"
         android:textColor="#FFFFFF"
         android:textSize="34sp" />
 
     <TextView
-        android:id="@+id/textView_pair"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView_connect"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:text="1. Pair your OBD senzor"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        style="@style/TextDarkStyle" />
-
-    <TextView
+        android:id="@+id/textView_stats"
         style="@style/TextDarkStyle"
-        android:id="@+id/textView_connect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_grant"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="85dp"
-        android:text="2. Connect to the senzor"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="10dp"
+        android:text="No errors found so far."
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:visibility="visible"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/view_error_overview"
+        android:layout_width="401dp"
+        android:layout_height="553dp"
+        android:layout_below="@+id/textView_stats"
+        android:layout_above="@+id/button_analyze"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp" />
+
     <Button
         style="@style/ButtonDarkStyle"
-        android:id="@+id/button_grant"
-        android:layout_width="190dp"
+        android:id="@+id/button_analyze"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="112dp"
-        android:layout_marginEnd="112dp"
-        android:layout_marginBottom="50dp"
-        android:text="Next"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="30dp"
+        android:text="Start AI Analysis"
         android:textColor="@color/white"
         android:textStyle="bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="326dp"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp" />
 
 </RelativeLayout>

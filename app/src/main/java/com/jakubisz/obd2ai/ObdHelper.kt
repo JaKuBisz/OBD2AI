@@ -18,35 +18,42 @@ class ObdHelper(private val bluetoothHelper: BluetoothHelper) {
         return obdConnection
     }
 
-    suspend fun getDtpCodes() : String
+    suspend fun getDtpCodes() : List<String>
     {
-        var obdDeviceConnection = obdConnection ?: throw IOException("ObdDeviceConnection is null")
-        return obdDeviceConnection.run(TroubleCodesCommand()).formattedValue
+        val obdDeviceConnection = obdConnection ?: throw IOException("ObdDeviceConnection is null")
+        val result = obdDeviceConnection.run(TroubleCodesCommand()).formattedValue
+        return splitErrors(result)
     }
-    suspend fun getPendingDtpCodes() : String
+    suspend fun getPendingDtpCodes() : List<String>
     {
-        var obdDeviceConnection = obdConnection ?: throw IOException("ObdDeviceConnection is null")
-        return obdDeviceConnection.run(PendingTroubleCodesCommand()).formattedValue
+        val obdDeviceConnection = obdConnection ?: throw IOException("ObdDeviceConnection is null")
+        val result =  obdDeviceConnection.run(PendingTroubleCodesCommand()).formattedValue
+        return splitErrors(result)
     }
-    suspend fun getPermanentDtpCodes() : String
+    suspend fun getPermanentDtpCodes() : List<String>
     {
-        var obdDeviceConnection = obdConnection ?: throw IOException("ObdDeviceConnection is null")
-        return obdDeviceConnection.run(PermanentTroubleCodesCommand()).formattedValue
+        val obdDeviceConnection = obdConnection ?: throw IOException("ObdDeviceConnection is null")
+        val result =  obdDeviceConnection.run(PermanentTroubleCodesCommand()).formattedValue
+        return splitErrors(result)
     }
-    suspend fun getAllDtpCodes() : String
+    suspend fun getAllDtpCodes() : List<String>
     {
-        var responses = mutableListOf<String>()
-        responses.add(getDtpCodes())
-        responses.add(getPendingDtpCodes())
-        responses.add(getPermanentDtpCodes())
+        val responses = mutableListOf<String>()
+        responses.addAll(getDtpCodes())
+        responses.addAll(getPendingDtpCodes())
+        responses.addAll(getPermanentDtpCodes())
 
-        return responses.joinToString(", ")
+        return responses
     }
 
     fun disconnectFromObdDevice() {
         bluetoothHelper.disconnectFromDevice()
     }
 
+    fun splitErrors(errors: String) : List<String>
+    {
+        return errors.split(",").map { it.trim() }
+    }
 
 
 }

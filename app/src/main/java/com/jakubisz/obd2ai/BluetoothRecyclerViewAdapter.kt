@@ -1,11 +1,11 @@
 package com.jakubisz.obd2ai
 
-import android.bluetooth.BluetoothDevice
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.jakubisz.obd2ai.model.BluetoothDeviceDTO
 
 class BluetoothRecyclerViewAdapter (
     private val devices: List<BluetoothDeviceDTO>,
