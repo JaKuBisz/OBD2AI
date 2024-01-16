@@ -1,4 +1,4 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.helpers
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,15 +20,6 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
-
-//BTManager overview
-//bool CheckIfAll required permissions are granted
-//void RequestPermissions
-//void EnableBluetoothIfPermitted
-//... GetAvailableDevices
-//void ConnectToDevice - return input and output streams
-//void DisconnectFromDev
-//
 
 class BluetoothHelper(private val context: Context) {
     private val bluetoothAdapter: BluetoothAdapter?
@@ -152,7 +143,7 @@ class BluetoothHelper(private val context: Context) {
             }
         }
 
-        _isBluetoothPermissionGranted.value = allPermissionsGranted
+        _isBluetoothPermissionGranted.postValue(allPermissionsGranted)
         return allPermissionsGranted
     }
 

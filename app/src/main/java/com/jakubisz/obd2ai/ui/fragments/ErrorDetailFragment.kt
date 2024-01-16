@@ -1,15 +1,19 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jakubisz.obd2ai.ui.viewmodels.ConnectorViewModel
+import com.jakubisz.obd2ai.ui.activities.MainActivity
+import com.jakubisz.obd2ai.R
+import com.jakubisz.obd2ai.ui.adapters.SuggestionsRecycleViewAdapter
 import com.jakubisz.obd2ai.model.DtpCodeDTO
 import com.jakubisz.obd2ai.model.ErrorSeverity
 

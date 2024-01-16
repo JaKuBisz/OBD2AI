@@ -1,8 +1,11 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.ui.viewmodels
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jakubisz.obd2ai.helpers.BluetoothHelper
+import com.jakubisz.obd2ai.helpers.ObdHelper
+import com.jakubisz.obd2ai.helpers.OpenAIService
 import com.jakubisz.obd2ai.model.BluetoothDeviceDTO
 import kotlinx.coroutines.launch
 import java.io.IOException

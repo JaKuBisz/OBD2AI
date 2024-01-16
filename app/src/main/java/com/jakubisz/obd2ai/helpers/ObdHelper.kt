@@ -1,4 +1,4 @@
-package com.jakubisz.obd2ai
+package com.jakubisz.obd2ai.helpers
 
 import com.github.eltonvs.obd.command.control.PendingTroubleCodesCommand
 import com.github.eltonvs.obd.command.control.PermanentTroubleCodesCommand

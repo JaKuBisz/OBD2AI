@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/BackgroundDarkStyle"
-    tools:context=".PermissionsFragment" >
+    tools:context=".ui.fragments.PermissionsFragment" >
 
     <TextView
         android:id="@+id/textView"
