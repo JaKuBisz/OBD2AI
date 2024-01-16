@@ -32,6 +32,11 @@ class PermissionsFragment : Fragment() {
             {
                 findNavController().navigate(R.id.action_permissions_to_connectFragment)
             }
+            else
+            {
+                val errorDialog = ErrorDialogFragment.newInstance("Required Bluetooth permissions were not granted")
+                errorDialog.show(parentFragmentManager, "errorDialog")
+            }
         })
         btnRequestPermission.setOnClickListener {
             activity?.let { activity ->
