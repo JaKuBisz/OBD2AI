@@ -2,7 +2,9 @@ package com.jakubisz.obd2ai.ui.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ContentResolver
 import android.os.Bundle
+import android.provider.Settings.Global.putString
 import androidx.fragment.app.DialogFragment
 
 class ErrorDialogFragment : DialogFragment() {

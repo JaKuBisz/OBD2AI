@@ -23,7 +23,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="end">
         <TextView
             android:id="@+id/textViewErrorTitle"
             android:layout_width="match_parent"
@@ -36,7 +37,7 @@
 
                 <TextView
                     android:id="@+id/textViewErrorCode"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:text="P0400"
