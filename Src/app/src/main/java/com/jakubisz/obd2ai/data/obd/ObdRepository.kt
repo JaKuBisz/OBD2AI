@@ -79,10 +79,7 @@ class ObdRepository @Inject constructor(
             add(conn.run(PendingTroubleCodesCommand()).formattedValue)
             add(conn.run(PermanentTroubleCodesCommand()).formattedValue)
         }
-        return raw.flatMap { it.split(",") }
-            .map { it.trim() }
-            .filter { it.isNotBlank() && !it.equals("OK", ignoreCase = true) && !it.equals("NO DATA", ignoreCase = true) }
-            .distinct()
+        return TroubleCodeParser.parse(raw)
     }
 
     fun observeLiveData(intervalMs: Long = 400): Flow<LiveReading> = flow {

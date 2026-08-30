@@ -7,9 +7,24 @@ OBD2AI is an innovative Android application that connects to your car's OBD2 sys
 
 ## Features
 
-- **Real-Time Diagnostics:** Connects to your car's OBD2 port for real-time data retrieval.
-- **AI-Powered Analysis:** Uses OpenAI's ChatGPT API for advanced error analysis and state-of-the-car reporting.
-- **User-Friendly Interface:** Easy to navigate interface for a hassle-free user experience.
+- **Live dashboard:** Streams RPM, speed, coolant temperature and fuel level into real-time gauges (with a demo mode that works without a car).
+- **Diagnostics scan:** Reads current, pending and permanent trouble codes from the ECU.
+- **AI-powered analysis:** OpenAI explains each trouble code in plain language — severity, implications and suggested actions.
+- **Offline DTC database:** Bundled database of common trouble codes, so diagnostics work without network or an API key.
+- **History:** Scan results and trip statistics (max RPM/speed, avg coolant temp) are stored locally with Room.
+
+## Architecture
+
+Single-activity Jetpack Compose app following MVVM with a repository layer and Hilt DI:
+
+```
+bluetooth/      BluetoothController - SPP socket handling, permissions
+data/obd/       ObdRepository - connection state machine + live PID streaming as Flow
+data/ai/        OpenAIService, AiRepository (LLM with offline fallback), DtcInfoProvider (bundled DTC db)
+data/local/     Room: DTC scan records + trip sessions
+ui/             Compose screens (home, connect, dashboard, dtc, history) + custom Canvas gauges
+model/          Shared models (DtpCodeDTO, LiveReading, ErrorSeverity)
+```
 
 ## Releases
 
@@ -44,9 +59,8 @@ OBD2AI is an innovative Android application that connects to your car's OBD2 sys
 
 ## Roadmap
 
-- **Live data dashboard** — stream RPM, speed, coolant temp and other PIDs into real-time charts instead of one-shot reads.
-- **Trip history** — persist scans and live sessions locally (Room) so users can compare vehicle health over time.
-- **DTC lookup without AI** — bundle an offline DTC database, use the LLM only for explanations to cut latency and API cost.
+- **Foreground tracking service** — keep recording live data with the screen off, with a persistent notification.
+- **Charts over time** — graph RPM/temperature trends within a trip.
 - **Fleet mode** — a lightweight backend (REST + WebSockets) where multiple devices report vehicle status for fleet tracking.
 - **Release pipeline** — signed release builds and versioned artifacts from CI.
 
