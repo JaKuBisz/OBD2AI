@@ -38,8 +38,23 @@ android {
         }
     }
 
+    // Release signing is configured from env vars (set by CI from secrets).
+    // Without them the release APK is built unsigned.
+    signingConfigs {
+        val keystoreFile = System.getenv("KEYSTORE_FILE")
+        if (!keystoreFile.isNullOrBlank()) {
+            create("release") {
+                storeFile = file(keystoreFile)
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfigs.findByName("release")?.let { signingConfig = it }
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

@@ -29,6 +29,7 @@ model/          Shared models (DtpCodeDTO, LiveReading, ErrorSeverity)
 ## Releases
 
 - This project uses [Semantic versioning](https://semver.org/)
+- Push a `v*` tag to build and publish a release APK via GitHub Actions (signed when the `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS` and `KEY_PASSWORD` secrets are configured).
 - See [current releases](https://github.com/JaKuBisz/OBD2AI/releases)
 
 ## Getting Started
@@ -62,7 +63,6 @@ model/          Shared models (DtpCodeDTO, LiveReading, ErrorSeverity)
 - **Foreground tracking service** — keep recording live data with the screen off, with a persistent notification.
 - **Charts over time** — graph RPM/temperature trends within a trip.
 - **Fleet mode** — a lightweight backend (REST + WebSockets) where multiple devices report vehicle status for fleet tracking.
-- **Release pipeline** — signed release builds and versioned artifacts from CI.
 
 ## Contributing
 
