@@ -1,6 +1,8 @@
 
 # OBD2AI - Intelligent Car Diagnostics
 
+[![Android CI](https://github.com/JaKuBisz/OBD2AI/actions/workflows/android-ci.yml/badge.svg)](https://github.com/JaKuBisz/OBD2AI/actions/workflows/android-ci.yml)
+
 OBD2AI is an innovative Android application that connects to your car's OBD2 system, providing detailed diagnostics and state analysis using OpenAI's ChatGPT API. This application aims to simplify car maintenance and diagnostics, making it accessible for every car owner.
 
 ## Features
@@ -25,10 +27,14 @@ OBD2AI is an innovative Android application that connects to your car's OBD2 sys
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/JakKubi/OBD2AI.git
+   git clone https://github.com/JaKuBisz/OBD2AI.git
    ```
-2. Open the project in your preferred Android development environment.
-3. Build and run the application.
+2. Add your OpenAI API key to `Src/local.properties`:
+   ```
+   OPENAI_API_KEY=sk-...
+   ```
+   Alternatively, export it as the `OPENAI_API_KEY` environment variable (this is what CI uses).
+3. Open the `Src` folder in Android Studio, or run `./gradlew assembleDebug` from `Src`.
 
 ## Usage
 
@@ -36,11 +42,19 @@ OBD2AI is an innovative Android application that connects to your car's OBD2 sys
 2. Open the OBD2AI app and pair it with the scanner.
 3. Access real-time data and AI-powered insights from your car.
 
+## Roadmap
+
+- **Live data dashboard** — stream RPM, speed, coolant temp and other PIDs into real-time charts instead of one-shot reads.
+- **Trip history** — persist scans and live sessions locally (Room) so users can compare vehicle health over time.
+- **DTC lookup without AI** — bundle an offline DTC database, use the LLM only for explanations to cut latency and API cost.
+- **Fleet mode** — a lightweight backend (REST + WebSockets) where multiple devices report vehicle status for fleet tracking.
+- **Release pipeline** — signed release builds and versioned artifacts from CI.
+
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-1. Clone the project repository to your local machine (`git clone https://github.com/JakKubi/OBD2AI.git`)
+1. Clone the project repository to your local machine (`git clone https://github.com/JaKuBisz/OBD2AI.git`)
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
