@@ -9,6 +9,7 @@ import com.jakubisz.obd2ai.data.obd.ObdRepository
 import com.jakubisz.obd2ai.model.LiveReading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -96,7 +97,7 @@ class DashboardViewModel @Inject constructor(
     /** Simulated sensor data so the dashboard can be demoed without a car. */
     private fun simulateLiveData() = flow {
         var t = 0.0
-        while (isActive) {
+        while (currentCoroutineContext().isActive) {
             emit(
                 LiveReading(
                     rpm = (2800 + 2200 * sin(t)).toInt().coerceIn(800, 6500),
