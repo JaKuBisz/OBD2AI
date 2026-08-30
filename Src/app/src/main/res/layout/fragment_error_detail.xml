@@ -64,7 +64,6 @@
                 android:text="Severity: High"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_centerVertical="true"
-                android:layout_below="@id/textViewErrorCode"
                 android:layout_toRightOf="@id/imageView_icon"
                 android:textColor="#FFFFFF"
                 android:drawablePadding="8dp"/>
