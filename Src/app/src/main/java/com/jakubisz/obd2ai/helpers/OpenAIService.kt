@@ -78,25 +78,26 @@ class OpenAIService {
         return result
     }
 
-    fun parseErrorInfo(jsonString: String): DtpCodeDTO {
-        try {
-            val jsonObject = JSONObject(jsonString)
+    companion object {
+        fun parseErrorInfo(jsonString: String): DtpCodeDTO {
+            try {
+                val jsonObject = JSONObject(jsonString)
 
-            val errorCode = jsonObject.getString("errorCode")
-            val severity = ErrorSeverity.fromInt(jsonObject.getInt("severity"))
-            val title = jsonObject.getString("title")
-            val detail = jsonObject.getString("detail")
-            val implications = jsonObject.getString("implications")
-            val actionsArray = jsonObject.getJSONArray("suggestedActions")
-            val suggestedActions = mutableListOf<String>()
-            for (i in 0 until actionsArray.length()) {
-                suggestedActions.add(actionsArray.getString(i))
+                val errorCode = jsonObject.getString("errorCode")
+                val severity = ErrorSeverity.fromInt(jsonObject.getInt("severity"))
+                val title = jsonObject.getString("title")
+                val detail = jsonObject.getString("detail")
+                val implications = jsonObject.getString("implications")
+                val actionsArray = jsonObject.getJSONArray("suggestedActions")
+                val suggestedActions = mutableListOf<String>()
+                for (i in 0 until actionsArray.length()) {
+                    suggestedActions.add(actionsArray.getString(i))
+                }
+                return DtpCodeDTO(errorCode, severity, title, detail, implications, suggestedActions)
+
+            } catch (e: Exception) {
+                return DtpCodeDTO("Error", ErrorSeverity.LOW, "Error", "Error", "Error", listOf("Error"))
             }
-            return DtpCodeDTO(errorCode, severity, title, detail, implications, suggestedActions)
-
-        } catch (e: Exception) {
-            return DtpCodeDTO("Error", ErrorSeverity.LOW, "Error", "Error", "Error", listOf("Error"))
         }
-
     }
 }

@@ -17,12 +17,17 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        // Set the API key in BuildConfig
-        val localProperties = Properties().apply {
-            load(rootProject.file("local.properties").inputStream())
+        // Set the API key in BuildConfig. Falls back to the OPENAI_API_KEY
+        // env variable so CI builds work without a local.properties file.
+        val localPropertiesFile = rootProject.file("local.properties")
+        val localProperties = Properties()
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
         }
-        val apiKey = localProperties.getProperty("OPENAI_API_KEY") ?: ""
-        buildConfigField("String", "OPENAI_API_KEY", apiKey)
+        val apiKey = localProperties.getProperty("OPENAI_API_KEY")
+            ?: System.getenv("OPENAI_API_KEY")
+            ?: ""
+        buildConfigField("String", "OPENAI_API_KEY", "\"$apiKey\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -85,6 +90,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     testImplementation("junit:junit:4.13.2")
+    // Provides a JVM implementation of org.json for local unit tests
+    testImplementation("org.json:json:20231013")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
