@@ -1,0 +1,138 @@
+[
+  {
+    "code": "P0300",
+    "severity": 2,
+    "title": "Random/Multiple Cylinder Misfire Detected",
+    "detail": "One or more engine cylinders are misfiring, causing the engine to run unevenly. Common causes include faulty spark plugs, ignition coils, fuel injectors, camshaft/crankshaft position sensors, or air-fuel mixture issues.",
+    "implications": "If left unresolved, this can reduce engine performance and fuel economy and increase harmful emissions. In severe cases it may damage the catalytic converter.",
+    "suggestedActions": ["Check and replace spark plugs and wires if necessary", "Test ignition coils and replace if necessary", "Inspect fuel injectors", "Test camshaft and crankshaft position sensors", "Check for vacuum leaks"]
+  },
+  {
+    "code": "P0420",
+    "severity": 2,
+    "title": "Catalyst System Efficiency Below Threshold",
+    "detail": "The efficiency of the catalytic converter is below the manufacturer-defined threshold. May be caused by a failing catalytic converter, faulty oxygen sensor, exhaust leaks, or fuel injection issues.",
+    "implications": "Increased tailpipe emissions, failed emission tests, decreased fuel economy, and potential long-term engine damage.",
+    "suggestedActions": ["Check and replace the catalytic converter if necessary", "Test oxygen sensors", "Inspect the exhaust system for leaks", "Check the fuel injection system"]
+  },
+  {
+    "code": "P0171",
+    "severity": 2,
+    "title": "System Too Lean (Bank 1)",
+    "detail": "The air-fuel mixture has too much air and not enough fuel. Possible causes: vacuum leak, faulty MAF sensor, fuel pressure problems, or a defective oxygen sensor.",
+    "implications": "Poor vehicle performance, higher emissions, and potential engine damage if left unresolved.",
+    "suggestedActions": ["Inspect for vacuum leaks", "Clean or replace the MAF sensor", "Test fuel pressure", "Check the oxygen sensor"]
+  },
+  {
+    "code": "P0136",
+    "severity": 2,
+    "title": "Oxygen Sensor Circuit Malfunction (Bank 1, Sensor 2)",
+    "detail": "Malfunction in the circuit of the downstream oxygen sensor. Usually a faulty sensor, damaged wiring, or loose connectors.",
+    "implications": "Reduced fuel efficiency, sub-optimal engine performance, and increased emissions.",
+    "suggestedActions": ["Check and replace the oxygen sensor", "Inspect wiring and connectors to the sensor"]
+  },
+  {
+    "code": "P0340",
+    "severity": 2,
+    "title": "Camshaft Position Sensor Circuit Malfunction",
+    "detail": "Issue in the 'A' circuit of the camshaft position sensor. Causes include a faulty sensor, wiring issues, or a worn timing belt/chain.",
+    "implications": "Engine stalling, hard starting, or engine damage in severe cases.",
+    "suggestedActions": ["Replace the camshaft position sensor if necessary", "Inspect and repair wiring", "Check the timing belt/chain"]
+  },
+  {
+    "code": "P1523",
+    "severity": 1,
+    "title": "Intake Manifold Runner Control Circuit Malfunction",
+    "detail": "Fault in the Intake Manifold Runner Control (IMRC) circuit, often a faulty IMRC solenoid/actuator or wiring harness issue.",
+    "implications": "Power loss, stalling, or increased emissions. Repair promptly to prevent further damage.",
+    "suggestedActions": ["Inspect and replace the IMRC solenoid", "Check the IMRC actuator", "Inspect the wiring harness and connectors"]
+  },
+  {
+    "code": "P0128",
+    "severity": 1,
+    "title": "Coolant Thermostat Malfunction",
+    "detail": "The coolant thermostat may be stuck open, or the engine coolant temperature sensor is faulty.",
+    "implications": "Increased fuel consumption, poor engine performance, and potential damage from overcooling or overheating.",
+    "suggestedActions": ["Inspect and replace the thermostat", "Check the coolant temperature sensor", "Check the coolant level"]
+  },
+  {
+    "code": "P0504",
+    "severity": 1,
+    "title": "Brake Switch A/B Correlation",
+    "detail": "Discrepancy between the 'A' and 'B' brake switch signals. Causes: faulty brake switch, blown fuse, or wiring issues.",
+    "implications": "Can affect cruise control and ABS, impacting driving safety.",
+    "suggestedActions": ["Check the brake switch", "Inspect brake system fuses", "Check wiring"]
+  },
+  {
+    "code": "P0532",
+    "severity": 1,
+    "title": "A/C Refrigerant Pressure Sensor Low Input",
+    "detail": "Input from the A/C refrigerant pressure sensor is abnormally low, usually due to low refrigerant from leaks or a faulty sensor.",
+    "implications": "Air conditioning works inefficiently; prolonged neglect can damage the A/C system.",
+    "suggestedActions": ["Refill A/C refrigerant", "Check the refrigerant pressure sensor", "Inspect for leaks"]
+  },
+  {
+    "code": "P0442",
+    "severity": 0,
+    "title": "EVAP System Small Leak Detected",
+    "detail": "A small leak in the evaporative emission control system. Most commonly a loose or faulty fuel cap, or a cracked EVAP hose.",
+    "implications": "Increased fuel vapor emissions and a possible failed emissions test. Not an immediate drivability concern.",
+    "suggestedActions": ["Tighten or replace the fuel cap", "Inspect EVAP hoses for cracks", "Smoke-test the EVAP system"]
+  },
+  {
+    "code": "P0455",
+    "severity": 0,
+    "title": "EVAP System Large Leak Detected",
+    "detail": "A large leak in the evaporative emission control system, often a missing fuel cap or a stuck-open purge/vent valve.",
+    "implications": "Fuel smell, increased emissions, failed emissions test.",
+    "suggestedActions": ["Check the fuel cap", "Test the purge and vent valves", "Smoke-test the EVAP system"]
+  },
+  {
+    "code": "P0401",
+    "severity": 1,
+    "title": "EGR Flow Insufficient",
+    "detail": "The exhaust gas recirculation system is not flowing enough exhaust gas, usually due to a clogged EGR valve or passages.",
+    "implications": "Higher NOx emissions, possible engine knock, and reduced performance.",
+    "suggestedActions": ["Clean or replace the EGR valve", "Clean EGR passages", "Test the EGR vacuum solenoid"]
+  },
+  {
+    "code": "P0101",
+    "severity": 1,
+    "title": "Mass Air Flow Sensor Range/Performance",
+    "detail": "The MAF sensor reading is outside the expected range, often caused by a dirty sensor or an intake air leak.",
+    "implications": "Poor fuel economy, rough idle, and reduced power.",
+    "suggestedActions": ["Clean the MAF sensor", "Inspect intake tubing for leaks", "Replace the air filter"]
+  },
+  {
+    "code": "P0500",
+    "severity": 1,
+    "title": "Vehicle Speed Sensor Malfunction",
+    "detail": "The ECU is receiving no or implausible signal from the vehicle speed sensor.",
+    "implications": "Speedometer may stop working and transmission shifting or ABS can be affected.",
+    "suggestedActions": ["Test the vehicle speed sensor", "Inspect wiring to the sensor", "Check the tone ring"]
+  },
+  {
+    "code": "P0325",
+    "severity": 1,
+    "title": "Knock Sensor Circuit Malfunction",
+    "detail": "Fault in the knock sensor circuit, which detects engine knock/pre-ignition.",
+    "implications": "The ECU cannot protect the engine from knock, risking engine damage under load and reduced performance.",
+    "suggestedActions": ["Replace the knock sensor", "Inspect knock sensor wiring and connector"]
+  },
+  {
+    "code": "P0700",
+    "severity": 1,
+    "title": "Transmission Control System Malfunction",
+    "detail": "Generic code indicating the transmission control module has detected a fault and requested the check engine light.",
+    "implications": "Transmission may enter limp mode with harsh shifting or limited gears.",
+    "suggestedActions": ["Read transmission-specific codes with a capable scanner", "Check transmission fluid level and condition", "Inspect TCM wiring"]
+  },
+  {
+    "code": "U0100",
+    "severity": 2,
+    "title": "Lost Communication with ECM/PCM",
+    "detail": "A control module has lost communication with the engine control module over the CAN bus.",
+    "implications": "Can cause no-start conditions or loss of critical vehicle functions. Needs prompt diagnosis.",
+    "suggestedActions": ["Check CAN bus wiring and connectors", "Test battery and charging voltage", "Scan all modules for related codes"]
+  }
+]

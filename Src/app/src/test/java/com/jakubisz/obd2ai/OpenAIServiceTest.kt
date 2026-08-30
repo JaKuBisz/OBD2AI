@@ -1,6 +1,6 @@
 package com.jakubisz.obd2ai
 
-import com.jakubisz.obd2ai.helpers.OpenAIService
+import com.jakubisz.obd2ai.data.ai.OpenAIService
 import com.jakubisz.obd2ai.model.ErrorSeverity
 import org.junit.Assert.assertEquals
 import org.junit.Test
